@@ -81,7 +81,7 @@ function displayItems() {
       list.appendChild(li);
     }
   });
-}
+}*/
 
 // Recherche en temps réel
-document.getElementById('search-item').addEventListener('input', displayItems);*/
+document.getElementById('search-item').addEventListener('input', displayItems);
