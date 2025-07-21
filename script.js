@@ -41,3 +41,23 @@ document.getElementById('input-item').addEventListener('keypress', function(e) {
 
 // Afficher la liste au chargement de la page
 displayItems();
+
+//pour la recherche
+function displayItems() {
+  const list = document.getElementById('list');
+  const searchInput = document.getElementById('search-item');
+  const searchValue = searchInput ? searchInput.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : '';
+  list.innerHTML = '';
+
+  items.forEach((item, index) => {
+    const normalizedItem = item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (normalizedItem.includes(searchValue)) {
+      const li = document.createElement('li');
+      li.textContent = item;
+      list.appendChild(li);
+    }
+  });
+}
+
+// Recherche en temps réel
+document.getElementById('search-item').addEventListener('input', displayItems);
