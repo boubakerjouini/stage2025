@@ -6,15 +6,38 @@ function saveToLocalStorage() {
   localStorage.setItem('items', JSON.stringify(items));
 }
 
-// Fonction pour afficher la liste dans la page
+// Fonction pour afficher la liste dans la page avec un bouton supprimer pour chacun
 function displayItems() {
   const list = document.getElementById('list');
-  list.innerHTML = ''; // Vide la liste avant de la remplir
+  const searchInput = document.getElementById('search-item');
+  const searchValue = searchInput ? searchInput.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : '';
+  list.innerHTML = '';
 
-  items.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    list.appendChild(li);
+  items.forEach((item, index) => {
+    const normalizedItem = item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (normalizedItem.includes(searchValue)) {
+      const li = document.createElement('li');
+
+      li.textContent = item;
+
+      // Création du bouton supprimer
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Supprimer';
+      deleteBtn.style.marginLeft = '10px';
+
+      // Quand on clique sur supprimer, on enlève cet élément du tableau
+      deleteBtn.addEventListener('click', () => {
+        items.splice(index, 1);
+        saveToLocalStorage();
+        displayItems();
+      });
+
+      // On ajoute le bouton à la ligne <li>
+      li.appendChild(deleteBtn);
+
+      // Puis on ajoute la ligne dans la liste
+      list.appendChild(li);
+    }
   });
 }
 
@@ -42,7 +65,8 @@ document.getElementById('input-item').addEventListener('keypress', function(e) {
 // Afficher la liste au chargement de la page
 displayItems();
 
-//pour la recherche
+/*
+//Pour la recherche
 function displayItems() {
   const list = document.getElementById('list');
   const searchInput = document.getElementById('search-item');
@@ -60,4 +84,4 @@ function displayItems() {
 }
 
 // Recherche en temps réel
-document.getElementById('search-item').addEventListener('input', displayItems);
+document.getElementById('search-item').addEventListener('input', displayItems);*/
